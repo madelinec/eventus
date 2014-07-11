@@ -6,6 +6,10 @@ gem 'rails_12factor', group: :production
 #Ruby Version
 #ruby "2.1.1"
 
+#parsing them rss feeds 
+gem 'feedjira'
+
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.2'
 
