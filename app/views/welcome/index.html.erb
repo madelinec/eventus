@@ -1,8 +1,17 @@
 <h2>Welcome to Eventus. My name is Madrina. I'm here to show you around.</h2>
 
-<p>
+<p>The time is now: <%= Time.now %> </p>
 
-  The time is now: <%= Time.now %> </P.
+<div id="recent_events">
+  <h3>Upcoming Events</h3>
+    <ul>
+      <% for entry in FeedEntry.all(:limit => 10,
+          :order => "published desc") %>
+        <li><%= link_to h(entry.title), entry.link %></li>
+      <% end %>
+    </ul>
+</div>
+
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <style type="text/css">
       html { height: 100% }
