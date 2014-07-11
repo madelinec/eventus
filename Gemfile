@@ -13,6 +13,9 @@ gem 'feedjira'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.2'
 
+# Use feedjira for parsing rss feeds
+gem 'feedjira'
+
 # Use postgresql as the database for Active Record
 gem 'pg'
 
