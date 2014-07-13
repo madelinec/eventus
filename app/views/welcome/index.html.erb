@@ -5,23 +5,29 @@
 <nav class="navbar navbar-default" role="navigation">
   <div class="container">
     <h1> eventus </h1>
-      <p class = "lead" > see what's happening in your neighboorhood.</p>
+      <p class = "lead"> see what's happening in your neighboorhood.</p>
   </div>
 </nav>
 <style> 
 
-
+.lead{
+  line-height: 50%%
+}
 
 
 h1 {
-  font-size: 400%;
+
+  
+  font-size: 300%;
   color: #A901DB;
-  font-family: 'Coming Soon', cursive;
+  letter-spacing: 9px;
+  line-height: 50%;
+  font-family: 'Arvo', serif;
   } 
 
   </style>
 
-<link href='http://fonts.googleapis.com/css?family=Coming+Soon' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Arvo' rel='stylesheet' type='text/css'>
 
 
 <nav class="navbar navbar-default" role="navigation">
@@ -132,31 +138,29 @@ google.maps.event.addDomListener(window, 'load', initialize);
   <style> 
 
   #sidebar-wrapper {
-  margin-right: -250px;
-  right: 250px;
-  width: 24%;
+  margin-right: -170px;
+  right: 200px;
+  width: 20%;
+  margin-left: 10%; 
   background: #f5f5f5;
   position: absolute;
   height: 100%;
+  border-style: ridge;
+  border-width: 10px;
   overflow-y: auto;
   z-index: 1000;
   transition: all 0.4s ease 0s;
-}
-
-#page-content-wrapper {
-  width: 100%;
 }
 
 .sidebar-nav {
   position: absolute;
   top: 0;
   width: 250px;
-  list-style: none;
-  margin: 5;
-  padding: 5;
+  margin-right: 5%;
+  padding: 5px;
 }
 
-@media (max-width:767px) {
+ /*@media (max-width:767px) {
 
     #wrapper {
       padding-right: 10;
@@ -175,7 +179,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
       right: 250px;
       width: 250px;
       transition: all 0.4s ease 0s;
-    }
+    } */
 
 }
 </style>
@@ -200,7 +204,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
     </div>
 
 
-    <div id="map-canvas" style="width: 75%; height: 100%" ></div>
+    <div id="map-canvas" style="width: 77%; height: 100%" ></div>
 
   </body>
 </html>
