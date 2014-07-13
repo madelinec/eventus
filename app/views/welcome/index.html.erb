@@ -3,34 +3,50 @@
 <p>The time is now: <%= Time.now %> </p>
 
 <div id="recent_events">
-  <h3>Upcoming Events</h3>
+  <h3>Recent and Upcoming Events</h3>
     <ul>
-      <% for entry in FeedEntry.all(:limit => 10,
-          :order => "published desc") %>
-        <li><%= link_to h(entry.title), entry.link %></li>
+      <% for entry in @entries %>
+        <li class="feedEntry-event" id="<%=entry.id%>"><%= link_to h(entry.title), entry.link %></li>
       <% end %>
     </ul>
 </div>
 
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-    <style type="text/css">
-      html { height: 100% }
-      body { height: 100%; margin: 0; padding: 0 }
-      #map-canvas { height: 100% }
-    </style>
     <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBx9-z6p_I0bOLTADMVsDRxY21qD0y3cIw">
     </script>
     <script type="text/javascript">
-      function initialize() {
-        var mapOptions = {
-          center: new google.maps.LatLng(42.3581, -71.0636),
-          zoom: 12
-        };
-        var map = new google.maps.Map(document.getElementById("map-canvas"),
-            mapOptions);
-      }
-      google.maps.event.addDomListener(window, 'load', initialize);
+
+$(document).ready(function() {
+  $('.feedEntry-event').hover(function() {
+    console.log($(this).text());
+  })
+
+});
+
+function initialize() {
+  var myLatlng = new google.maps.LatLng(42.3581, -71.0636);
+
+  var mapOptions = {
+    center: new google.maps.LatLng(42.3581, -71.0636),
+    zoom: 12
+  };
+
+  var map = new google.maps.Map(document.getElementById("map-canvas"),
+    mapOptions);
+
+  /*
+  var marker = new google.maps.Marker({
+    position: myLatlng,
+    map: map,
+    title: 'Hello'
+  });
+*/
+
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
     </script>
   </head>
   <body>
