@@ -3,11 +3,15 @@ source 'https://rubygems.org'
 #heroku thing
 gem 'rails_12factor', group: :production
 
+gem 'geocoder'
+
 #Ruby Version
 #ruby "2.1.1"
 
 #parsing them rss feeds 
 gem 'feedjira'
+
+gem 'nokogiri', '1.6.2'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
