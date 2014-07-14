@@ -114,8 +114,7 @@ function initialize() {
   var event_details = <%= @event_details.to_json.html_safe %>;
   var locations = <%= @locations.to_json.html_safe %>;
   var summaries = <%= @event_summaries.to_json.html_safe %>;
-  //console.log(event_details);
-  //console.log(locations);  
+  var links = <%= @event_links.to_json.html_safe %>;
 
   var myLatlng = new google.maps.LatLng(42.3581, -71.0636);
   var mapOptions = {
@@ -139,9 +138,10 @@ function initialize() {
     (function(marker) {
       google.maps.event.addDomListener(marker, 'click', function() {
         var title = marker.getTitle();
+        var title_link = "<a href='" + links[title] + "' target='_blank'>" + title + "</a>"
         var summary = summaries[title];
         $("#summary-content").html(summary);
-        $("#summary-title").html(title);
+        $("#summary-title").html(title_link);
       });
     })(marker);
   }
@@ -189,7 +189,6 @@ var set_map_center = function(address) {
   background: #f5f5f5;
   position: absolute;
   height: 100%;
-  border-style: ridge;
   border-width: 10px;
   overflow-y: auto;
   z-index: 1000;

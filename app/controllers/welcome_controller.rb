@@ -5,6 +5,7 @@ class WelcomeController < ApplicationController
   	@event_details = Hash.new
   	@locations = Array.new
   	@event_summaries = Hash.new
+  	@event_links = Hash.new
 
   	date_regex = /(Monday|Tuesday|Wednesday|Thursday|Friday), (January|February|March|April|May|June|July|August) (\d){1,2}, (\d){4}/
   	address_regex = /<br \/>(\d)+ ((\w)+ )+(\w)+<br \/>(\w)+(,)? MA (\d){5,}/
@@ -12,8 +13,10 @@ class WelcomeController < ApplicationController
   	@entries.each do |entry| 
   		summary = entry.summary
   		title = entry.title
+  		link = entry.link
 
   		@event_summaries[title] = summary
+  		@event_links[title] = link
 
   		# match returns MatchData or nil
   		date = date_regex.match(summary)
