@@ -3,7 +3,11 @@ source 'https://rubygems.org'
 #heroku thing
 gem 'rails_12factor', group: :production
 
+# for converting addresses to lat-lng
 gem 'geocoder'
+
+# cronjobs my son
+gem 'whenever', :require => false
 
 #Ruby Version
 #ruby "2.1.1"
@@ -11,6 +15,7 @@ gem 'geocoder'
 #parsing them rss feeds 
 gem 'feedjira'
 
+# specifying 1.6.2 stops nokogiri from breaking
 gem 'nokogiri', '1.6.2'
 
 
