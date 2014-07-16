@@ -8,8 +8,12 @@
       <p class = "lead"> see what's happening in your neighborhood.</p>
   </div>
 </nav>
-<style> 
-
+<style>
+ 
+body {
+	background-color:#f8f8f8;
+	}
+	
 .lead{
   line-height: 50%%
 }
@@ -19,7 +23,7 @@ h1 {
 
   
   font-size: 300%;
-  color: #A901DB;
+  color: #A74CAB;
   letter-spacing: 9px;
   line-height: 50%;
   font-family: 'Arvo', serif;
@@ -131,7 +135,13 @@ function initialize() {
     var marker = new google.maps.Marker({
       position: latLng,
       map: map,
-      title: locations[i]['title']
+      title: locations[i]['title'],
+      if ( event_type[title] === "Farmer's Market" ){
+     	    icon: {
+      path: google.maps.SymbolPath.CIRCLE,
+      scale: 10
+    			}
+     	}
     });
 
     // need to wrap listener in closure to get each marker in loop
@@ -186,10 +196,11 @@ var set_map_center = function(address) {
   right: 200px;
   width: 20%;
   margin-left: 10%; 
-  background: #f5f5f5;
   position: absolute;
   height: 100%;
-  border-width: 10px;
+  border-width: 1px;
+  background-color: #ffffff;
+  border-color:#e7e7e7;
   overflow-y: auto;
   z-index: 1000;
   transition: all 0.4s ease 0s;
@@ -225,6 +236,9 @@ var set_map_center = function(address) {
     } */
 
 }
+
+
+
 </style>
  </head>
 
@@ -254,6 +268,7 @@ var set_map_center = function(address) {
 
 
     <div id="map-canvas" style="width: 77%; height: 100%" ></div>
+
 
   </body>
 </html>
