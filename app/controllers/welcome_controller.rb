@@ -1,6 +1,7 @@
 class WelcomeController < ApplicationController
 
   def index
+
   	@entries = FeedEntry.all(:limit => 100, :order => "published asc")
   	@event_dates = Hash.new
   	@locations = Array.new
@@ -20,6 +21,13 @@ class WelcomeController < ApplicationController
 =end 
 
   	date_regex = /[^<>]*(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)[^<>]*(January|February|March|April|May|June|July|August|September|October|November|December)[^<>]*/
+
+    type_regex = /Arts & Crafts|Attractions & Museums|Author Talk|Book Group Book Sale|Community Meeting|Computers\/Technology|
+    Concerts \/ Live Music|Early Literacy|Environmental Events|ESOL|Exhibition|Farmer's Market|Film|Food & Dining|
+    Games\/Gaming|Health \/ Fitness|Historical|Holiday Celebration|Homework Help|Meeting \/ Hearing|Nature|Non-Profit Fundraiser|
+    Parades & Festivals|Park Event|Performing Arts|Public Meeting \/ Hearing|Social Networking|Sports|Story Time|Talks & Lectures|
+    Theatre|Tours|Visual Arts|Volunteer Opportunity|Walks & Races|Workshops & Classes/
+
   	address_regex = /<br \/>(\d)+ ((\w)+ )+(\w)+<br \/>(\w)+(,)? MA (\d){5,}/
 
   	@entries.each do |entry| 
@@ -33,8 +41,14 @@ class WelcomeController < ApplicationController
   		@event_ids[title] = id
 
   		# match returns MatchData or nil
+  		type = type_regex.match(summary)
   		date = date_regex.match(summary)
   		html_address = address_regex.match(summary)
+  		
+  		unless type.nil?
+  		  type = type[0]
+  		  @event_type[entry.title] = type
+  		end
 
   		unless date.nil?
   			date = date[0] # update to get all unique dates in the match array

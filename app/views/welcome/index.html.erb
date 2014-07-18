@@ -1,7 +1,6 @@
 
 <%= render "shared/header" %>
 
-
 <html>
 <head>
 
@@ -53,7 +52,13 @@ function initialize() {
     var marker = new google.maps.Marker({
       position: latLng,
       map: map,
-      title: locations[i]['title']
+      title: locations[i]['title'],
+      if ( event_type[title] === "Farmer's Market" ){
+     	    icon: {
+      path: google.maps.SymbolPath.CIRCLE,
+      scale: 10
+    			}
+     	}
     });
 
     // need to wrap listener in closure to get each marker in loop
@@ -94,8 +99,6 @@ var set_map_center = function(address) {
     </script>
 
 
- 
-
  </head>
 
   <body>
@@ -104,7 +107,7 @@ var set_map_center = function(address) {
     <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
           <li>
-            <h3 id="summary-title" class="lead"></h3>
+            <h3 id="summary-title"></h3>
             <p id="summary-content"></p>
           </li>
           <li><p></p><p></p></li>
@@ -124,6 +127,7 @@ var set_map_center = function(address) {
 
 
     <div id="map-canvas" style="width: 77%; height: 100%" ></div>
+
 
   </body>
 </html>
