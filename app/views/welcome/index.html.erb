@@ -1,88 +1,5 @@
 
-<!-- PLAYING WITH NAV BAR CLASSES AND SUCH, THIS SHOULD BE ITS OWN CLASS OR SOMETHING -->
-
-
-<nav class="navbar navbar-default" role="navigation">
-  <div class="container">
-    <h1> eventus </h1>
-      <p class = "lead"> see what's happening in your neighborhood.</p>
-  </div>
-</nav>
-<style>
- 
-body {
-	background-color:#f8f8f8;
-	}
-	
-.lead{
-  line-height: 50%%
-}
-
-
-h1 {
-
-  
-  font-size: 300%;
-  color: #A74CAB;
-  letter-spacing: 9px;
-  line-height: 50%;
-  font-family: 'Arvo', serif;
-  } 
-
-  </style>
-
-<link href='http://fonts.googleapis.com/css?family=Arvo' rel='stylesheet' type='text/css'>
-
-
-<nav class="navbar navbar-default" role="navigation">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">current time: <%= Time.now.strftime("%I:%M%p") %></a>
-    </div>
-
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Link</a></li>
-        <li><a href="#">Link</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
-          <ul class="dropdown-menu" role="menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li class="divider"></li>
-            <li><a href="#">Separated link</a></li>
-            <li class="divider"></li>
-            <li><a href="#">One more separated link</a></li>
-          </ul>
-        </li>
-      </ul>
-
-      <ul class="nav navbar-nav navbar-right">
-              <form class="navbar-form navbar-left" role="search">
-        <div class="form-group">
-          <input id="search-bar" type="text" class="form-control" placeholder="Search">
-        </div>
-        <button id="search-btn" type="submit" class="btn btn-default">Submit</button>
-      </form>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
-
-
-<!-- END OF NAVBAR PLAYTIME-->
-
-
-
+<%= render "shared/header" %>
 
 
 <html>
@@ -90,6 +7,12 @@ h1 {
 
 <!-- GOOG MAP -->
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style>
+      #legend {
+        background: white;
+        padding: 10px;
+      }
+    </style>
     <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBx9-z6p_I0bOLTADMVsDRxY21qD0y3cIw">
     </script>
@@ -115,10 +38,12 @@ $(document).ready(function() {
 function initialize() {
 
   var entries = <%= @entries.to_json.html_safe %>;
-  var event_details = <%= @event_details.to_json.html_safe %>;
+  var dates = <%= @event_dates.to_json.html_safe %>;
   var locations = <%= @locations.to_json.html_safe %>;
   var summaries = <%= @event_summaries.to_json.html_safe %>;
   var links = <%= @event_links.to_json.html_safe %>;
+  var ids = <%= @event_ids.to_json.html_safe %>;
+  var types = <%= @event_types.to_json.html_safe %>;
 
   var myLatlng = new google.maps.LatLng(42.3581, -71.0636);
   var mapOptions = {
@@ -129,22 +54,323 @@ function initialize() {
   var map = new google.maps.Map(document.getElementById("map-canvas"),
     mapOptions);
 
+  map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(
+    document.getElementById('legend'));
+
+  styles = [];
+
+  var blueDot = "<%= image_url('blue-dot.png') %>";
+  styles.push({"type": "Story Time", "icon": blueDot});
+
+  var greenDot = "<%= image_url('green-dot.png') %>";
+  styles.push({"type": "Exhibition", "icon": greenDot});
+
+  var orangeDot = "<%= image_url('orange-dot.png') %>";
+  styles.push({"type": "Visual Arts", "icon": orangeDot});
+
+  var pinkDot = "<%= image_url('pink-dot.png') %>";
+  styles.push({"type": "&nbsp;Attractions &amp; Museums", "icon": pinkDot});
+
+  var purpleDot = "<%= image_url('purple-dot.png') %>";
+  styles.push({"type": "Tours", "icon": purpleDot});
+
+  var redDot = "<%= image_url('red-dot.png') %>";
+  styles.push({"type": "Meeting / Hearing", "icon": redDot});
+
+  var yellowDot = "<%= image_url('yellow-dot.png') %>";
+  styles.push({"type": "Early Literacy", "icon": yellowDot});
+
+
+
+  var legend = document.getElementById('legend');
+    for (var i=0; i<styles.length; i++) {
+      var style = styles[i];
+      console.log(style);
+      var name = style.type;
+      var icon = style.icon;
+      var div = document.createElement('div');
+      div.innerHTML = '<img src="' + icon + '"> ' + name;
+      legend.appendChild(div);
+  }
+
   for (var i=0; i<locations.length; i++) {
     var latLng = new google.maps.LatLng(locations[i]['lat'], locations[i]['lng']);
-    
+
+    var t = locations[i]['title'];
+    var type = types[t];
+ 
+
+    if (typeof(type)==='string') {
+
+      if (type.indexOf("Story Time") > -1) {
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: map,
+          title: t,
+          icon: blueDot
+        });
+      }
+
+      else if (type.indexOf("Exhibition") > -1) {
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: map,
+          title: t,
+          icon: greenDot
+        });
+      }else if (type.indexOf("Visual Arts") > -1) {
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: map,
+          title: t,
+          icon: orangeDot
+        });
+      }else if (type.indexOf("&nbsp;Attractions &amp; Museums") > -1) {
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: map,
+          title: t,
+          icon: pinkDot
+        });
+      }else if (type.indexOf("Tours") > -1) {
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: map,
+          title: t,
+          icon: purpleDot
+        });
+      }else if (type.indexOf("Meeting / Hearing") > -1) {
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: map,
+          title: t,
+          icon: redDot
+        });
+      }else if (type.indexOf("Early Literacy") > -1) {
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: map,
+          title: t,
+          icon: yellowDot
+        });
+      }
+  
+      /*
+      if (type.indexOf("Arts & Crafts") > -1) {
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: map,
+          title: t,
+          icon: <%= image_path("images/blue-dot.png") %>
+        });
+      }
+
+      if (type.indexOf("Attractions & Museums") > -1) {
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: map,
+          title: t,
+          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+        });
+      }
+      if (type.indexOf("Author Talk") > -1) {
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: map,
+          title: t,
+          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+        });
+      }
+      if (type.indexOf("Book Group") > -1) {
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: map,
+          title: t,
+          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+        });
+      }
+      if (type.indexOf("Book Sale") > -1) {
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: map,
+          title: t,
+          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+        });
+      }
+      if (type.indexOf("Community Meeting") > -1) {
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: map,
+          title: t,
+          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+        });
+      }
+      if (type.indexOf("Computers\/Technology") > -1) {
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: map,
+          title: t,
+          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+        });
+      }
+      if (type.indexOf("Concerts \/ Live Music") > -1) {
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: map,
+          title: t,
+          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+        });
+      }
+      if (type.indexOf("Early Literacy") > -1) {
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: map,
+          title: t,
+          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+        });
+      }
+      if (type.indexOf("Environmental Events") > -1) {
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: map,
+          title: t,
+          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+        });
+      }
+      if (type.indexOf("ESOL") > -1) {
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: map,
+          title: t,
+          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+        });
+      }
+      if (type.indexOf("Exhibition") > -1) {
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: map,
+          title: t,
+          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+        });
+      }
+      if (type.indexOf("Farmer's Market") > -1) {
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: map,
+          title: t,
+          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+        });
+      }
+      if (type.indexOf("Film") > -1) {
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: map,
+          title: t,
+          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+        });
+      }
+      if (type.indexOf("Food & Dining") > -1) {
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: map,
+          title: t,
+          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+        });
+      }
+      if (type.indexOf("Games\/Gaming") > -1) {
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: map,
+          title: t,
+          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+        });
+      }
+      if (type.indexOf("Health \/ Fitness") > -1) {
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: map,
+          title: t,
+          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+        });
+      }
+      if (type.indexOf("Historical") > -1) {
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: map,
+          title: t,
+          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+        });
+      }
+      if (type.indexOf("Holiday Celebration") > -1) {
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: map,
+          title: t,
+          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+        });
+      }
+      if (type.indexOf("Homework Help") > -1) {
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: map,
+          title: t,
+          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+        });
+      }
+      if (type.indexOf("Meeting \/ Hearing") > -1) {
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: map,
+          title: t,
+          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+        });
+      }
+      if (type.indexOf("Nature") > -1) {
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: map,
+          title: t,
+          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+        });
+      }
+      if (type.indexOf("Non-Profit Fundraiser") > -1) {
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: map,
+          title: t,
+          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+        });
+      }
+      */
+
+  } else {
+    console.log(ids[t]);
+    /*
     var marker = new google.maps.Marker({
       position: latLng,
       map: map,
-      title: locations[i]['title'],
-      if ( event_type[title] === "Farmer's Market" ){
-     	    icon: {
-      path: google.maps.SymbolPath.CIRCLE,
-      scale: 10
-    			}
-     	}
+      title: t
     });
+*/
+  }
+
+    /*
+    Parades & Festivals|Park Event|Performing Arts|Public Meeting \/ Hearing|Social Network
+                       ing|Sports|Story Time|Talks & Lectures|
+                        30     Theatre|Tours|Visual Arts|Volunteer Opportunity|Walks & Races|Workshops & Classes/
+    
+                        */
+    
+    /*
+    var marker = new google.maps.Marker({
+      position: latLng,
+      map: map,
+      title: t
+    });
+    */
 
     // need to wrap listener in closure to get each marker in loop
+    // see http://robertnyman.com/2008/10/09/explaining-javascript-scope-and-closures/
     (function(marker) {
       google.maps.event.addDomListener(marker, 'click', function() {
         var title = marker.getTitle();
@@ -152,20 +378,12 @@ function initialize() {
         var summary = summaries[title];
         $("#summary-content").html(summary);
         $("#summary-title").html(title_link);
+        console.log(dates[title], ":", types[title], ":", ids[title]);
       });
     })(marker);
   }
 
 }
-
-/*
-var display_summary = function(marker) {
-  var title = marker.getTitle();
-  var summary = marker[title];
-  $("#summary-content").html(summary);
-  $("#summary-title").html(title);
-}
-*/
 
 google.maps.event.addDomListener(window, 'load', initialize);
 
@@ -174,6 +392,7 @@ var search = $('#search-bar');
 
 $('#search-btn').click(function() {
   log_search()
+
 })
 
 var log_search = function() {
@@ -185,6 +404,7 @@ var set_map_center = function(address) {
   // convert address to lat-lng
   // set map center to lat-lng
 }
+<<<<<<< HEAD
     </script>
 
 
@@ -210,40 +430,9 @@ var set_map_center = function(address) {
   transition: all 0.4s ease 0s;
 }
 
-.sidebar-nav {
-  position: absolute;
-  top: 0;
-  width: 250px;
-  margin-right: 5%;
-  padding: 5px;
-}
-
- /*@media (max-width:767px) {
-
-    #wrapper {
-      padding-right: 10;
-    }
-
-    #sidebar-wrapper {
-      right: 0;
-    }
-
-    #wrapper.active {
-      position: relative;
-      right: 25%;
-    }
-
-    #wrapper.active #sidebar-wrapper {
-      right: 250px;
-      width: 250px;
-      transition: all 0.4s ease 0s;
-    } */
-
-}
+    </script>
 
 
-
-</style>
  </head>
 
   <body>
@@ -270,9 +459,14 @@ var set_map_center = function(address) {
     </div>
     </div>
 
+    <div id="legend">
+      <b>Legend</b><br/>Event Types
+    </div>
+
 
     <div id="map-canvas" style="width: 77%; height: 100%" ></div>
 
 
   </body>
 </html>
+

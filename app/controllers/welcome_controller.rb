@@ -1,32 +1,45 @@
 class WelcomeController < ApplicationController
 
   def index
-  	@entries = FeedEntry.all(:limit => 5, :order => "published asc")
-  	@event_details = Hash.new
-  	@event_type = Hash.new
+
+  	@entries = FeedEntry.all(:limit => 100, :order => "published asc")
+  	@event_dates = Hash.new
   	@locations = Array.new
   	@event_summaries = Hash.new
   	@event_links = Hash.new
-<<<<<<< HEAD
-    
-    type_regex = /Arts & Crafts|Attractions & Museums|Author Talk|Book Group Book Sale|Community Meeting|Computers\/Technology|
+  	@event_ids = Hash.new
+    @event_types = Hash.new
+
+  	
+
+=begin
+	  time_date_regex = //
+	  multi_date_regex = /(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday), (January|February|March|April|May|June|July|August) (\d){1,2}, (\d){1,2}(am|pm)&nbsp;&ndash; (Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday), (January|February|March|April|May|June|July|August) (\d){1,2}, (\d){4}, (\d){1,2}(am|pm)( )?<br( )?\/>/
+  	ongoing_date_regex = /(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday), (January|February|March|April|May|June|July|August) (\d){1,2}, (\d){4}/
+		date_regex = /(Monday|Tuesday|Wednesday|Thursday|Friday), (January|February|March|April|May|June|July|August) (\d){1,2}, (\d){4}/
+		#date_with_month_regex = /(<br( )?\/>)[^<>]*(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)[^<>]*(January|February|March|April|May|June|July|August)[^<>]*(<br( )?\/>)/	
+		#date_with_br_regex = /(<br( )?\/>)[^<>]*(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)[^<>]*(<br( )?\/>)/
+=end 
+
+  	date_regex = /[^<>]*(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)[^<>]*(January|February|March|April|May|June|July|August|September|October|November|December)[^<>]*/
+
+    type_regex = /Arts & Crafts|Attractions & Museums|Author Talk|Book Group|Book Sale|Community Meeting|Computers\/Technology|
     Concerts \/ Live Music|Early Literacy|Environmental Events|ESOL|Exhibition|Farmer's Market|Film|Food & Dining|
     Games\/Gaming|Health \/ Fitness|Historical|Holiday Celebration|Homework Help|Meeting \/ Hearing|Nature|Non-Profit Fundraiser|
     Parades & Festivals|Park Event|Performing Arts|Public Meeting \/ Hearing|Social Networking|Sports|Story Time|Talks & Lectures|
-    Theatre|Tours|Visual Arts|Volunteer Opportunity|Walks & Races|Workshops & Classes/
-=======
+    Theatre|Tours|Visual Arts|&nbsp;Attractions &amp; Museums|Volunteer Opportunity|Walks & Races|Workshops & Classes/
 
->>>>>>> dc31ea3d946a25ebb3d20be2f9830dc60d42a639
-  	date_regex = /(Monday|Tuesday|Wednesday|Thursday|Friday), (January|February|March|April|May|June|July|August) (\d){1,2}, (\d){4}/
   	address_regex = /<br \/>(\d)+ ((\w)+ )+(\w)+<br \/>(\w)+(,)? MA (\d){5,}/
 
   	@entries.each do |entry| 
   		summary = entry.summary
   		title = entry.title
   		link = entry.link
+  		id = entry.id
 
   		@event_summaries[title] = summary
   		@event_links[title] = link
+  		@event_ids[title] = id
 
   		# match returns MatchData or nil
   		type = type_regex.match(summary)
@@ -35,12 +48,21 @@ class WelcomeController < ApplicationController
   		
   		unless type.nil?
   		  type = type[0]
-  		  @event_type[entry.title] = type
+  		  @event_types[entry.title] = type
   		end
 
   		unless date.nil?
-  			date = date[0]
-  			@event_details[entry.id] = date
+  			date = date[0] # update to get all unique dates in the match array
+  			date.gsub! "&nbsp;", " "
+  			date.gsub! "&ndash;", "-"
+  			@event_dates[entry.title] = date
+
+  			begin
+  				parsed_date = date.to_datetime
+  				@event_dates[entry.title] = parsed_date.inspect
+  			rescue ArgumentError
+  				@event_dates[entry.title] = date
+  			end
   		end
 
   		unless html_address.nil?
@@ -67,5 +89,10 @@ class WelcomeController < ApplicationController
   		end
   	end
   end
+
+  def example_helper_method
+  end
+  # method can now be called from view
+  helper_method :example_helper_method
 
 end
