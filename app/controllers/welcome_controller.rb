@@ -8,6 +8,7 @@ class WelcomeController < ApplicationController
   	@event_summaries = Hash.new
   	@event_links = Hash.new
   	@event_ids = Hash.new
+    @event_types = Hash.new
 
   	
 
@@ -22,11 +23,11 @@ class WelcomeController < ApplicationController
 
   	date_regex = /[^<>]*(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)[^<>]*(January|February|March|April|May|June|July|August|September|October|November|December)[^<>]*/
 
-    type_regex = /Arts & Crafts|Attractions & Museums|Author Talk|Book Group Book Sale|Community Meeting|Computers\/Technology|
+    type_regex = /Arts & Crafts|Attractions & Museums|Author Talk|Book Group|Book Sale|Community Meeting|Computers\/Technology|
     Concerts \/ Live Music|Early Literacy|Environmental Events|ESOL|Exhibition|Farmer's Market|Film|Food & Dining|
     Games\/Gaming|Health \/ Fitness|Historical|Holiday Celebration|Homework Help|Meeting \/ Hearing|Nature|Non-Profit Fundraiser|
     Parades & Festivals|Park Event|Performing Arts|Public Meeting \/ Hearing|Social Networking|Sports|Story Time|Talks & Lectures|
-    Theatre|Tours|Visual Arts|Volunteer Opportunity|Walks & Races|Workshops & Classes/
+    Theatre|Tours|Visual Arts|&nbsp;Attractions &amp; Museums|Volunteer Opportunity|Walks & Races|Workshops & Classes/
 
   	address_regex = /<br \/>(\d)+ ((\w)+ )+(\w)+<br \/>(\w)+(,)? MA (\d){5,}/
 
@@ -47,7 +48,7 @@ class WelcomeController < ApplicationController
   		
   		unless type.nil?
   		  type = type[0]
-  		  @event_type[entry.title] = type
+  		  @event_types[entry.title] = type
   		end
 
   		unless date.nil?
