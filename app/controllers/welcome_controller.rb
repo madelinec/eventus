@@ -2,7 +2,7 @@ class WelcomeController < ApplicationController
 
   def index
 
-  	@entries = FeedEntry.all(:limit => 100, :order => "published asc")
+  	@entries = FeedEntry.all.order('published asc').limit(50)
   	@event_dates = Hash.new
   	@locations = Array.new
   	@event_summaries = Hash.new
