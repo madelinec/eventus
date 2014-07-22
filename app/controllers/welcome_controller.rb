@@ -23,11 +23,11 @@ class WelcomeController < ApplicationController
 
   	date_regex = /[^<>]*(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)[^<>]*(January|February|March|April|May|June|July|August|September|October|November|December)[^<>]*/
 
-    type_regex = /Arts & Crafts|Attractions & Museums|Author Talk|Book Group|Book Sale|Community Meeting|Computers\/Technology|
-    Concerts \/ Live Music|Early Literacy|Environmental Events|ESOL|Exhibition|Farmer's Market|Film|Food & Dining|
+    type_regex = /Arts &amp; Crafts|Author Talk|Book Group|Book Sale|Community Meeting|Computers\/Technology|
+    Concerts \/ Live Music|Early Literacy|Environmental Events|ESOL|Exhibition|Farmer&#39;s Market|Film|Food &amp; Dining|
     Games\/Gaming|Health \/ Fitness|Historical|Holiday Celebration|Homework Help|Meeting \/ Hearing|Nature|Non-Profit Fundraiser|
-    Parades & Festivals|Park Event|Performing Arts|Public Meeting \/ Hearing|Social Networking|Sports|Story Time|Talks & Lectures|
-    Theatre|Tours|Visual Arts|&nbsp;Attractions &amp; Museums|Volunteer Opportunity|Walks & Races|Workshops & Classes/
+    Parades &amp; Festivals|Park Event|Performing Arts|Public Meeting \/ Hearing|Social Networking|Sports|Story Time|Talks &amp; Lectures|
+    Theatre|Tours|Visual Arts|Attractions &amp; Museums|Volunteer Opportunity|Walks &amp; Races|Workshops &amp; Classes/
 
   	address_regex = /<br \/>(\d)+ ((\w)+ )+(\w)+<br \/>(\w)+(,)? MA (\d){5,}/
 
@@ -48,6 +48,7 @@ class WelcomeController < ApplicationController
   		
   		unless type.nil?
   		  type = type[0]
+        type.gsub! "&amp;", "&"
   		  @event_types[entry.title] = type
   		end
 

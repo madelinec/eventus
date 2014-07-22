@@ -17,6 +17,7 @@
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBx9-z6p_I0bOLTADMVsDRxY21qD0y3cIw">
     </script>
     <script type="text/javascript">
+    /*
       function initialize() {
         var mapOptions = {
           center: new google.maps.LatLng(42.3581, -71.0636),
@@ -26,14 +27,25 @@
             mapOptions);
       }
       google.maps.event.addDomListener(window, 'load', initialize);
-
+    */
 
 $(document).ready(function() {
+  
+  /*
   $('.feedEntry-event').hover(function() {
     console.log($(this).text());
   })
+  */
+  console.log("ready");
 
 });
+
+
+$(window).ready(function() {
+  console.log("window");
+});
+
+
 
 function initialize() {
 
@@ -125,7 +137,7 @@ function initialize() {
           title: t,
           icon: orangeDot
         });
-      }else if (type.indexOf("&nbsp;Attractions &amp; Museums") > -1) {
+      }else if (type.indexOf("Attractions & Museums") > -1) {
         var marker = new google.maps.Marker({
           position: latLng,
           map: map,
@@ -153,6 +165,18 @@ function initialize() {
           title: t,
           icon: yellowDot
         });
+      }
+
+      else {
+        /*
+        console.log(type);
+        var marker = new google.maps.Marker({
+          position: latLng,
+          map: map,
+          title: t,
+          icon: "http://maps.google.com/intl/en_us/mapfiles/ms/micons/msmarker.shadow.png"
+        });
+*/
       }
   
       /*
