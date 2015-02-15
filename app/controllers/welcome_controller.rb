@@ -71,7 +71,9 @@ class WelcomeController < ApplicationController
 				address = html_address[0].gsub! "<br />", " "
 
 				# convert address to lat-lng 
-				result = Geocoder.search(address)
+        #result = Geocoder.search(address)
+# commented this out bc Geocoder is over api limit
+        result = nil
 
 				unless result.nil?
 					unless result[0].nil?

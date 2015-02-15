@@ -417,8 +417,11 @@ var search = $('#search-bar');
 $('#search-btn').click(function() {
 
   var address = search.val();
+  /*
+  // commented out because Geocoder over limit
   var result = <%= Geocoder.search() %>;
   console.log(result);
+  */
 
   /*
   result = Geocoder.search(address)
