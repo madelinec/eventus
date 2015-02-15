@@ -3,6 +3,7 @@
 
 <html>
 <head>
+  <title>Maddie's Map</title>
 
 <!-- GOOG MAP -->
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
@@ -414,8 +415,22 @@ google.maps.event.addDomListener(window, 'load', initialize);
 var search = $('#search-bar');
 
 $('#search-btn').click(function() {
-  log_search()
 
+  var address = search.val();
+  var result = <%= Geocoder.search() %>;
+  console.log(result);
+
+  /*
+  result = Geocoder.search(address)
+
+        unless result.nil?
+          unless result[0].nil?
+            coords = Hash.new
+            lng = result[0].data['geometry']['location']['lng']
+            lat = result[0].data['geometry']['location']['lat']
+  */
+
+  log_search()
 })
 
 var log_search = function() {
