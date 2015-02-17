@@ -30,7 +30,8 @@ class FeedEntry < ActiveRecord::Base
   				:summary		=> entry.summary,
   				:link				=> entry.url,
   				:published	=> entry.published,
-  				:guid				=> entry.id
+  				:guid				=> entry.id,
+  				:s_event_start => entry.categories
 				)
   		end
 		end

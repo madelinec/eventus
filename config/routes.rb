@@ -1,5 +1,6 @@
 Eventus::Application.routes.draw do
 
+  get "analytics/index"
   root 'welcome#index'
 
 

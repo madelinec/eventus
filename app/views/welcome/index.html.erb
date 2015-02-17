@@ -3,171 +3,160 @@
 
 <html>
 <head>
-  <title>Maddie's Map</title>
 
-<!-- GOOG MAP -->
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-    <style>
-      #legend {
-        background: white;
-        padding: 10px;
-      }
-    </style>
-    <script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBx9-z6p_I0bOLTADMVsDRxY21qD0y3cIw">
-    </script>
-    <script type="text/javascript">
-    /*
-      function initialize() {
-        var mapOptions = {
-          center: new google.maps.LatLng(42.3581, -71.0636),
-          zoom: 14
-        };
-        var map = new google.maps.Map(document.getElementById("map-canvas"),
-            mapOptions);
-      }
-      google.maps.event.addDomListener(window, 'load', initialize);
-    */
-
-$(document).ready(function() {
+  <!-- GOOG MAP -->
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  <style>
+  #legend {
+    background: white;
+    padding: 10px;
+  }
+  </style>
+  <script type="text/javascript"
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBx9-z6p_I0bOLTADMVsDRxY21qD0y3cIw">
+  </script>
+  <script type="text/javascript">
   
+
+      $(document).ready(function() {
+
   /*
   $('.feedEntry-event').hover(function() {
     console.log($(this).text());
   })
-  */
-  console.log("ready");
+      */
+      console.log("ready");
 
-});
-
-
-$(window).ready(function() {
-  console.log("window");
-});
+    });
 
 
-
-function initialize() {
-
-  var entries = <%= @entries.to_json.html_safe %>;
-  var dates = <%= @event_dates.to_json.html_safe %>;
-  var locations = <%= @locations.to_json.html_safe %>;
-  var summaries = <%= @event_summaries.to_json.html_safe %>;
-  var links = <%= @event_links.to_json.html_safe %>;
-  var ids = <%= @event_ids.to_json.html_safe %>;
-  var types = <%= @event_types.to_json.html_safe %>;
-
-  var myLatlng = new google.maps.LatLng(42.3581, -71.0636);
-  var mapOptions = {
-    center: new google.maps.LatLng(42.3581, -71.0636),
-    zoom: 14
-  };
-
-  var map = new google.maps.Map(document.getElementById("map-canvas"),
-    mapOptions);
-
-  map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(
-    document.getElementById('legend'));
-
-  styles = [];
-
-  var blueDot = "<%= image_url('blue-dot.png') %>";
-  styles.push({"type": "Story Time", "icon": blueDot});
-
-  var greenDot = "<%= image_url('green-dot.png') %>";
-  styles.push({"type": "Exhibition", "icon": greenDot});
-
-  var orangeDot = "<%= image_url('orange-dot.png') %>";
-  styles.push({"type": "Visual Arts", "icon": orangeDot});
-
-  var pinkDot = "<%= image_url('pink-dot.png') %>";
-  styles.push({"type": "&nbsp;Attractions &amp; Museums", "icon": pinkDot});
-
-  var purpleDot = "<%= image_url('purple-dot.png') %>";
-  styles.push({"type": "Tours", "icon": purpleDot});
-
-  var redDot = "<%= image_url('red-dot.png') %>";
-  styles.push({"type": "Meeting / Hearing", "icon": redDot});
-
-  var yellowDot = "<%= image_url('yellow-dot.png') %>";
-  styles.push({"type": "Early Literacy", "icon": yellowDot});
+      $(window).ready(function() {
+        console.log("window");
+      });
 
 
 
-  var legend = document.getElementById('legend');
-    for (var i=0; i<styles.length; i++) {
-      var style = styles[i];
-      console.log(style);
-      var name = style.type;
-      var icon = style.icon;
-      var div = document.createElement('div');
-      div.innerHTML = '<img src="' + icon + '"> ' + name;
-      legend.appendChild(div);
-  }
+      function initialize() {
 
-  for (var i=0; i<locations.length; i++) {
-    var latLng = new google.maps.LatLng(locations[i]['lat'], locations[i]['lng']);
+        var entries = <%= @entries.to_json.html_safe %>;
+        var dates = <%= @event_dates.to_json.html_safe %>;
+        var locations = <%= @locations.to_json.html_safe %>;
+        var summaries = <%= @event_summaries.to_json.html_safe %>;
+        var links = <%= @event_links.to_json.html_safe %>;
+        var ids = <%= @event_ids.to_json.html_safe %>;
+        var types = <%= @event_types.to_json.html_safe %>;
 
-    var t = locations[i]['title'];
-    var type = types[t];
- 
+        var myLatlng = new google.maps.LatLng(42.3581, -71.0636);
+        var mapOptions = {
+          center: new google.maps.LatLng(42.3581, -71.0636),
+          zoom: 14
+        };
 
-    if (typeof(type)==='string') {
+        var map = new google.maps.Map(document.getElementById("map-canvas"),
+          mapOptions);
 
-      if (type.indexOf("Story Time") > -1) {
-        var marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          title: t,
-          icon: blueDot
-        });
-      }
+        map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(
+          document.getElementById('legend'));
 
-      else if (type.indexOf("Exhibition") > -1) {
-        var marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          title: t,
-          icon: greenDot
-        });
-      }else if (type.indexOf("Visual Arts") > -1) {
-        var marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          title: t,
-          icon: orangeDot
-        });
-      }else if (type.indexOf("Attractions & Museums") > -1) {
-        var marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          title: t,
-          icon: pinkDot
-        });
-      }else if (type.indexOf("Tours") > -1) {
-        var marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          title: t,
-          icon: purpleDot
-        });
-      }else if (type.indexOf("Meeting / Hearing") > -1) {
-        var marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          title: t,
-          icon: redDot
-        });
-      }else if (type.indexOf("Early Literacy") > -1) {
-        var marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          title: t,
-          icon: yellowDot
-        });
-      }
+        styles = [];
 
-      else {
+        var blueDot = "<%= image_url('blue-dot.png') %>";
+        styles.push({"type": "Story Time", "icon": blueDot});
+
+        var greenDot = "<%= image_url('green-dot.png') %>";
+        styles.push({"type": "Exhibition", "icon": greenDot});
+
+        var orangeDot = "<%= image_url('orange-dot.png') %>";
+        styles.push({"type": "Visual Arts", "icon": orangeDot});
+
+        var pinkDot = "<%= image_url('pink-dot.png') %>";
+        styles.push({"type": "&nbsp;Attractions &amp; Museums", "icon": pinkDot});
+
+        var purpleDot = "<%= image_url('purple-dot.png') %>";
+        styles.push({"type": "Tours", "icon": purpleDot});
+
+        var redDot = "<%= image_url('red-dot.png') %>";
+        styles.push({"type": "Meeting / Hearing", "icon": redDot});
+
+        var yellowDot = "<%= image_url('yellow-dot.png') %>";
+        styles.push({"type": "Early Literacy", "icon": yellowDot});
+
+
+
+        var legend = document.getElementById('legend');
+        for (var i=0; i<styles.length; i++) {
+          var style = styles[i];
+          console.log(style);
+          var name = style.type;
+          var icon = style.icon;
+          var div = document.createElement('div');
+          div.innerHTML = '<img src="' + icon + '"> ' + name;
+          legend.appendChild(div);
+        }
+
+        for (var i=0; i<locations.length; i++) {
+          var latLng = new google.maps.LatLng(locations[i]['lat'], locations[i]['lng']);
+
+          var t = locations[i]['title'];
+          var type = types[t];
+
+
+          if (typeof(type)==='string') {
+
+            if (type.indexOf("Story Time") > -1) {
+              var marker = new google.maps.Marker({
+                position: latLng,
+                map: map,
+                title: t,
+                icon: blueDot
+              });
+            }
+
+            else if (type.indexOf("Exhibition") > -1) {
+              var marker = new google.maps.Marker({
+                position: latLng,
+                map: map,
+                title: t,
+                icon: greenDot
+              });
+            }else if (type.indexOf("Visual Arts") > -1) {
+              var marker = new google.maps.Marker({
+                position: latLng,
+                map: map,
+                title: t,
+                icon: orangeDot
+              });
+            }else if (type.indexOf("Attractions & Museums") > -1) {
+              var marker = new google.maps.Marker({
+                position: latLng,
+                map: map,
+                title: t,
+                icon: pinkDot
+              });
+            }else if (type.indexOf("Tours") > -1) {
+              var marker = new google.maps.Marker({
+                position: latLng,
+                map: map,
+                title: t,
+                icon: purpleDot
+              });
+            }else if (type.indexOf("Meeting / Hearing") > -1) {
+              var marker = new google.maps.Marker({
+                position: latLng,
+                map: map,
+                title: t,
+                icon: redDot
+              });
+            }else if (type.indexOf("Early Literacy") > -1) {
+              var marker = new google.maps.Marker({
+                position: latLng,
+                map: map,
+                title: t,
+                icon: yellowDot
+              });
+            }
+
+            else {
         /*
         console.log(type);
         var marker = new google.maps.Marker({
@@ -177,8 +166,8 @@ function initialize() {
           icon: "http://maps.google.com/intl/en_us/mapfiles/ms/micons/msmarker.shadow.png"
         });
 */
-      }
-  
+}
+
       /*
       if (type.indexOf("Arts & Crafts") > -1) {
         var marker = new google.maps.Marker({
@@ -367,8 +356,8 @@ function initialize() {
       }
       */
 
-  } else {
-    console.log(ids[t]);
+    } else {
+      console.log(ids[t]);
     /*
     var marker = new google.maps.Marker({
       position: latLng,
@@ -376,7 +365,7 @@ function initialize() {
       title: t
     });
 */
-  }
+}
 
     /*
     Parades & Festivals|Park Event|Performing Arts|Public Meeting \/ Hearing|Social Network
@@ -384,14 +373,14 @@ function initialize() {
                         30     Theatre|Tours|Visual Arts|Volunteer Opportunity|Walks & Races|Workshops & Classes/
     
                         */
-    
+
     /*
     var marker = new google.maps.Marker({
       position: latLng,
       map: map,
       title: t
     });
-    */
+*/
 
     // need to wrap listener in closure to get each marker in loop
     // see http://robertnyman.com/2008/10/09/explaining-javascript-scope-and-closures/
@@ -415,25 +404,8 @@ google.maps.event.addDomListener(window, 'load', initialize);
 var search = $('#search-bar');
 
 $('#search-btn').click(function() {
-
-  var address = search.val();
-  /*
-  // commented out because Geocoder over limit
-  var result = <%= Geocoder.search() %>;
-  console.log(result);
-  */
-
-  /*
-  result = Geocoder.search(address)
-
-        unless result.nil?
-          unless result[0].nil?
-            coords = Hash.new
-            lng = result[0].data['geometry']['location']['lng']
-            lat = result[0].data['geometry']['location']['lat']
-  */
-
   log_search()
+
 })
 
 var log_search = function() {
@@ -449,42 +421,45 @@ var set_map_center = function(address) {
 typeEnum = {
 
 }
-    </script>
+</script>
 
 
- </head>
+</head>
 
-  <body>
+<body>
 
-    <div id="wrapper">
+  <div id="wrapper">
     <div id="sidebar-wrapper">
-        <ul class="sidebar-nav">
-          <li>
-            <h3 id="summary-title"></h3>
-            <p id="summary-content"></p>
-          </li>
-          <li><p></p><p></p></li>
-          <li>
-           <div id="recent_events">
-                  <h3 class = "lead"> upcoming events</h3>
-                      <ul>
-      <% for entry in @entries %>
-        <li class="feedEntry-event" id="<%=entry.id%>"><%= link_to h(entry.title), entry.link %></li>
-      <% end %>
+      <ul class="sidebar-nav">
+        <!--
+        <li>
+          <h3 id="summary-title"></h3>
+          <p id="summary-content"></p>
+        </li>
+        <li><p></p><p></p></li>
+      -->
+        <li>
+         <div id="recent_events">
+          <h3 class = "lead"> upcoming events</h3>
+          <ul>
+            <% for entry in @entries %>
+            <li class="feedEntry-event" id="<%=entry.id%>"><%= link_to h(entry.title), entry.link %></li>
+            <% end %>
+          </ul>
+        </div>
+      </li>
     </ul>
-               </div>
-             </li>
-        </ul>
-    </div>
-    </div>
+  </div>
+</div>
 
-    <div id="legend">
-      <b>Legend</b><br/>Event Types
-    </div>
+<div id="legend">
+  <b>Legend</b><br/>Event Types
+</div>
 
-
-    <div id="map-canvas" style="width: 77%; height: 100%" ></div>
+<div id="map-wrapper" style="width: 50%; height: 75%; border: 2px solid black; margin: 15px;" >
+  <div id="map-canvas"></div>
+</div>
 
 
-  </body>
+</body>
 </html>
