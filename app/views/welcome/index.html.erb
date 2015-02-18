@@ -46,6 +46,8 @@
         var ids = <%= @event_ids.to_json.html_safe %>;
         var types = <%= @event_types.to_json.html_safe %>;
 
+        console.log(types);
+
         var myLatlng = new google.maps.LatLng(42.3581, -71.0636);
         var mapOptions = {
           center: new google.maps.LatLng(42.3581, -71.0636),
@@ -95,10 +97,12 @@
         }
 
         for (var i=0; i<locations.length; i++) {
+          console.log("location " + i);
           var latLng = new google.maps.LatLng(locations[i]['lat'], locations[i]['lng']);
 
           var t = locations[i]['title'];
           var type = types[t];
+          console.log("event type: " + type);
 
 
           if (typeof(type)==='string') {
