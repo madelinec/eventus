@@ -16,25 +16,6 @@
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBx9-z6p_I0bOLTADMVsDRxY21qD0y3cIw">
   </script>
   <script type="text/javascript">
-  
-
-      $(document).ready(function() {
-
-  /*
-  $('.feedEntry-event').hover(function() {
-    console.log($(this).text());
-  })
-      */
-      console.log("ready");
-
-    });
-
-
-      $(window).ready(function() {
-        console.log("window");
-      });
-
-
 
       function initialize() {
 
@@ -46,12 +27,10 @@
         var ids = <%= @event_ids.to_json.html_safe %>;
         var types = <%= @event_types.to_json.html_safe %>;
 
-        console.log(types);
-
         var myLatlng = new google.maps.LatLng(42.3581, -71.0636);
         var mapOptions = {
           center: new google.maps.LatLng(42.3581, -71.0636),
-          zoom: 14
+          zoom: 8
         };
 
         var map = new google.maps.Map(document.getElementById("map-canvas"),
@@ -160,231 +139,12 @@
               });
             }
 
-            else {
-        /*
-        console.log(type);
-        var marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          title: t,
-          icon: "http://maps.google.com/intl/en_us/mapfiles/ms/micons/msmarker.shadow.png"
-        });
-*/
-}
+            else {}
 
-      /*
-      if (type.indexOf("Arts & Crafts") > -1) {
-        var marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          title: t,
-          icon: <%= image_path("images/blue-dot.png") %>
-        });
-      }
-
-      if (type.indexOf("Attractions & Museums") > -1) {
-        var marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          title: t,
-          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-        });
-      }
-      if (type.indexOf("Author Talk") > -1) {
-        var marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          title: t,
-          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-        });
-      }
-      if (type.indexOf("Book Group") > -1) {
-        var marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          title: t,
-          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-        });
-      }
-      if (type.indexOf("Book Sale") > -1) {
-        var marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          title: t,
-          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-        });
-      }
-      if (type.indexOf("Community Meeting") > -1) {
-        var marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          title: t,
-          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-        });
-      }
-      if (type.indexOf("Computers\/Technology") > -1) {
-        var marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          title: t,
-          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-        });
-      }
-      if (type.indexOf("Concerts \/ Live Music") > -1) {
-        var marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          title: t,
-          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-        });
-      }
-      if (type.indexOf("Early Literacy") > -1) {
-        var marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          title: t,
-          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-        });
-      }
-      if (type.indexOf("Environmental Events") > -1) {
-        var marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          title: t,
-          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-        });
-      }
-      if (type.indexOf("ESOL") > -1) {
-        var marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          title: t,
-          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-        });
-      }
-      if (type.indexOf("Exhibition") > -1) {
-        var marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          title: t,
-          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-        });
-      }
-      if (type.indexOf("Farmer's Market") > -1) {
-        var marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          title: t,
-          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-        });
-      }
-      if (type.indexOf("Film") > -1) {
-        var marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          title: t,
-          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-        });
-      }
-      if (type.indexOf("Food & Dining") > -1) {
-        var marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          title: t,
-          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-        });
-      }
-      if (type.indexOf("Games\/Gaming") > -1) {
-        var marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          title: t,
-          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-        });
-      }
-      if (type.indexOf("Health \/ Fitness") > -1) {
-        var marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          title: t,
-          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-        });
-      }
-      if (type.indexOf("Historical") > -1) {
-        var marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          title: t,
-          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-        });
-      }
-      if (type.indexOf("Holiday Celebration") > -1) {
-        var marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          title: t,
-          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-        });
-      }
-      if (type.indexOf("Homework Help") > -1) {
-        var marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          title: t,
-          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-        });
-      }
-      if (type.indexOf("Meeting \/ Hearing") > -1) {
-        var marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          title: t,
-          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-        });
-      }
-      if (type.indexOf("Nature") > -1) {
-        var marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          title: t,
-          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-        });
-      }
-      if (type.indexOf("Non-Profit Fundraiser") > -1) {
-        var marker = new google.maps.Marker({
-          position: latLng,
-          map: map,
-          title: t,
-          icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-        });
-      }
-      */
 
     } else {
       console.log(ids[t]);
-    /*
-    var marker = new google.maps.Marker({
-      position: latLng,
-      map: map,
-      title: t
-    });
-*/
 }
-
-    /*
-    Parades & Festivals|Park Event|Performing Arts|Public Meeting \/ Hearing|Social Network
-                       ing|Sports|Story Time|Talks & Lectures|
-                        30     Theatre|Tours|Visual Arts|Volunteer Opportunity|Walks & Races|Workshops & Classes/
-    
-                        */
-
-    /*
-    var marker = new google.maps.Marker({
-      position: latLng,
-      map: map,
-      title: t
-    });
-*/
 
     // need to wrap listener in closure to get each marker in loop
     // see http://robertnyman.com/2008/10/09/explaining-javascript-scope-and-closures/

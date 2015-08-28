@@ -1,5 +1,6 @@
 class FeedEntry < ActiveRecord::Base
-	
+
+# http://www.trumba.com/calendars/cob-calendar.rss
 	def self.update_from_feed(feed_url)
 		feed = Feedjira::Feed.fetch_and_parse(feed_url)
 		add_entries(feed.entries)
